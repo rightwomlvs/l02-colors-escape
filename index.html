@@ -828,8 +828,8 @@ body {
 <div class="overlay" id="overlay"></div>
 
 <!-- Audio Assets -->
-<audio id="bgm" src="assets/audio/Music_Trap_Drama.mp3" loop preload="auto"></audio>
-<audio id="sfxWin" src="assets/audio/Awards.m4a" preload="auto"></audio>
+<audio id="bgm" src="https://rightwomlvs.github.io/whats-in-my-bob-escape/assets/audio/Music_Trap_Drama.mp3" loop preload="auto"></audio>
+<audio id="sfxWin" src="https://rightwomlvs.github.io/whats-in-my-bob-escape/assets/audio/Awards.m4a" preload="auto"></audio>
 
 <!-- ══════════════════════════════════
      HOME SCREEN
@@ -1563,70 +1563,62 @@ let soundOn = true;
 const bgm    = document.getElementById('bgm');
 const sfxWin = document.getElementById('sfxWin');
 
-/* ── Emergency Siren (Web Audio API) ── */
-let sirenNode = null;
-let sirenGain = null;
+/* ── Ambient Sound — dreamy color lab atmosphere (Web Audio API) ── */
+let ambientNode = null;
 
-function playSiren() {
-    if (!soundOn || sirenNode) return;
+function playAmbient() {
+    if (!soundOn || ambientNode) return;
     try {
         const ctx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // Oscillator 1 — square wave, fast wail
-        const osc1 = ctx.createOscillator();
-        osc1.type = 'square';
-        const g1 = ctx.createGain(); g1.gain.value = 0.08;
-        osc1.connect(g1); g1.connect(ctx.destination);
+        // Pad — warm triangle wave chord
+        const notes = [261.63, 329.63, 392.00, 523.25]; // C4 E4 G4 C5
+        const oscs = [];
+        const gains = [];
+        notes.forEach((freq, i) => {
+            const osc = ctx.createOscillator();
+            osc.type = 'triangle';
+            osc.frequency.value = freq;
+            const g = ctx.createGain();
+            g.gain.value = 0;
+            // Fade in staggered
+            g.gain.setValueAtTime(0, ctx.currentTime);
+            g.gain.linearRampToValueAtTime(0.04 - i * 0.005, ctx.currentTime + 2 + i * 0.5);
+            osc.connect(g); g.connect(ctx.destination);
+            osc.start();
+            oscs.push(osc); gains.push(g);
+        });
 
-        // Oscillator 2 — detuned sawtooth for beating
-        const osc2 = ctx.createOscillator();
-        osc2.type = 'sawtooth';
-        const g2 = ctx.createGain(); g2.gain.value = 0.06;
-        osc2.connect(g2); g2.connect(ctx.destination);
+        // Shimmer — gentle high sparkle
+        const shimmer = ctx.createOscillator();
+        shimmer.type = 'sine';
+        shimmer.frequency.value = 1046.5; // C6
+        const sg = ctx.createGain(); sg.gain.value = 0;
+        sg.gain.setValueAtTime(0, ctx.currentTime);
+        sg.gain.linearRampToValueAtTime(0.015, ctx.currentTime + 3);
+        shimmer.connect(sg); sg.connect(ctx.destination);
+        shimmer.start();
 
-        // Noise layer — gritty texture
-        const bufSize = ctx.sampleRate * 2;
-        const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
-        const data = buf.getChannelData(0);
-        for (let i = 0; i < bufSize; i++) data[i] = Math.random() * 2 - 1;
-        const noise = ctx.createBufferSource();
-        noise.buffer = buf; noise.loop = true;
-        const noiseFilt = ctx.createBiquadFilter();
-        noiseFilt.type = 'bandpass'; noiseFilt.frequency.value = 1200; noiseFilt.Q.value = 2;
-        const noiseGain = ctx.createGain(); noiseGain.gain.value = 0.03;
-        noise.connect(noiseFilt); noiseFilt.connect(noiseGain); noiseGain.connect(ctx.destination);
-        noise.start();
+        // Slow LFO on shimmer
+        const lfo = ctx.createOscillator();
+        lfo.type = 'sine'; lfo.frequency.value = 0.3;
+        const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.01;
+        lfo.connect(lfoGain); lfoGain.connect(sg.gain);
+        lfo.start();
 
-        // Sweep: 0.8s up, 0.8s down (fast urgent wail)
-        const SWEEP = 0.8;
-        function sweep(t) {
-            osc1.frequency.setValueAtTime(700, t);
-            osc1.frequency.linearRampToValueAtTime(1100, t + SWEEP);
-            osc1.frequency.linearRampToValueAtTime(700, t + SWEEP * 2);
-            osc2.frequency.setValueAtTime(710, t);
-            osc2.frequency.linearRampToValueAtTime(1115, t + SWEEP);
-            osc2.frequency.linearRampToValueAtTime(710, t + SWEEP * 2);
-        }
-
-        osc1.start(); osc2.start();
-        sweep(ctx.currentTime);
-
-        const CYCLE = SWEEP * 2;
-        let timer = setInterval(() => sweep(ctx.currentTime), CYCLE * 1000);
-
-        sirenNode = { ctx, osc1, osc2, noise, timer };
-        sirenGain = g1;
+        ambientNode = { ctx, oscs, gains, shimmer, lfo };
     } catch(e) {}
 }
 
-function stopSiren() {
-    if (!sirenNode) return;
-    clearInterval(sirenNode.timer);
+function stopAmbient() {
+    if (!ambientNode) return;
     try {
-        sirenNode.osc1.stop(); sirenNode.osc2.stop(); sirenNode.noise.stop();
-        sirenNode.ctx.close();
+        ambientNode.oscs.forEach(o => { try { o.stop(); } catch(e) {} });
+        ambientNode.shimmer.stop();
+        ambientNode.lfo.stop();
+        ambientNode.ctx.close();
     } catch(e) {}
-    sirenNode = null; sirenGain = null;
+    ambientNode = null;
 }
 
 /* ── Text-to-Speech (Web Speech API) ── */
@@ -1646,11 +1638,11 @@ function toggleSound() {
     document.getElementById('soundBtn').textContent = soundOn ? '🔊' : '🔇';
     if (soundOn) {
         bgm.play().catch(()=>{});
-        playSiren();
+        playAmbient();
     } else {
         bgm.pause();
         sfxWin.pause();
-        stopSiren();
+        stopAmbient();
     }
 }
 function playBGM() { if (soundOn) bgm.play().catch(()=>{}); }
@@ -1664,7 +1656,7 @@ function playWin() {
 
 document.addEventListener('click', function startBGMOnce() {
     playBGM();
-    playSiren();
+    playAmbient();
     document.removeEventListener('click', startBGMOnce);
 }, { once: true });
 
@@ -1702,11 +1694,11 @@ function switchTo(id, afterFn) {
 
 function goHome() {
     stopBGM();
-    stopSiren();
+    stopAmbient();
     G = { diff: null, levels: null, cur: 0, correct: 0, questions: [], studentName: '', currentAnsIdx: 0 };
     document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('picked'));
     document.getElementById('btnStart').disabled = true;
-    switchTo('homeScreen', () => { if (soundOn) playSiren(); });
+    switchTo('homeScreen', () => { if (soundOn) playAmbient(); });
 }
 
 /* ─────────────────────────────────
@@ -1720,7 +1712,7 @@ function startGame() {
     }
     G.questions = pool.slice(0, G.levels);
     G.cur = 0; G.correct = 0;
-    stopSiren();
+    stopAmbient();
     playBGM();
     switchTo('gameScreen', () => {
         buildFragRow();
