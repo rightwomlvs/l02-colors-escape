@@ -1560,63 +1560,10 @@ let soundOn = true;
 const bgm    = document.getElementById('bgm');
 const sfxWin = document.getElementById('sfxWin');
 
-/* ── Ambient Sound — dreamy color lab atmosphere (Web Audio API) ── */
+/* ── Ambient Sound — removed (was buzzing interference) ── */
 let ambientNode = null;
-
-function playAmbient() {
-    if (!soundOn || ambientNode) return;
-    try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-
-        // Pad — warm triangle wave chord
-        const notes = [261.63, 329.63, 392.00, 523.25]; // C4 E4 G4 C5
-        const oscs = [];
-        const gains = [];
-        notes.forEach((freq, i) => {
-            const osc = ctx.createOscillator();
-            osc.type = 'triangle';
-            osc.frequency.value = freq;
-            const g = ctx.createGain();
-            g.gain.value = 0;
-            // Fade in staggered
-            g.gain.setValueAtTime(0, ctx.currentTime);
-            g.gain.linearRampToValueAtTime(0.04 - i * 0.005, ctx.currentTime + 2 + i * 0.5);
-            osc.connect(g); g.connect(ctx.destination);
-            osc.start();
-            oscs.push(osc); gains.push(g);
-        });
-
-        // Shimmer — gentle high sparkle
-        const shimmer = ctx.createOscillator();
-        shimmer.type = 'sine';
-        shimmer.frequency.value = 1046.5; // C6
-        const sg = ctx.createGain(); sg.gain.value = 0;
-        sg.gain.setValueAtTime(0, ctx.currentTime);
-        sg.gain.linearRampToValueAtTime(0.015, ctx.currentTime + 3);
-        shimmer.connect(sg); sg.connect(ctx.destination);
-        shimmer.start();
-
-        // Slow LFO on shimmer
-        const lfo = ctx.createOscillator();
-        lfo.type = 'sine'; lfo.frequency.value = 0.3;
-        const lfoGain = ctx.createGain(); lfoGain.gain.value = 0.01;
-        lfo.connect(lfoGain); lfoGain.connect(sg.gain);
-        lfo.start();
-
-        ambientNode = { ctx, oscs, gains, shimmer, lfo };
-    } catch(e) {}
-}
-
-function stopAmbient() {
-    if (!ambientNode) return;
-    try {
-        ambientNode.oscs.forEach(o => { try { o.stop(); } catch(e) {} });
-        ambientNode.shimmer.stop();
-        ambientNode.lfo.stop();
-        ambientNode.ctx.close();
-    } catch(e) {}
-    ambientNode = null;
-}
+function playAmbient() {}
+function stopAmbient() {}
 
 /* ── Text-to-Speech (Web Speech API) ── */
 function speak(text, onend) {
