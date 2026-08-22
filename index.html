@@ -1873,7 +1873,7 @@ function showNameScreen() {
 }
 
 function showVictory() {
-    G.studentName = document.getElementById('nameInput').value.trim() || 'Survivor';
+    G.studentName = document.getElementById('nameInput').value.trim() || 'Color Explorer';
     switchTo('victoryScreen', () => {
         document.getElementById('certName').textContent = G.studentName;
         document.getElementById('certDiff').textContent  = DIFF_LABEL[G.diff];
