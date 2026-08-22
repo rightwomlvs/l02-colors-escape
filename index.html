@@ -58,38 +58,35 @@ body {
     overflow: hidden;
 }
 
-/* Neon Sun */
+/* Color Wheel */
 .sun {
     position: absolute;
-    top: -50px; right: 12%;
-    width: 220px; height: 220px;
-    background: radial-gradient(circle, #fffbeb 0%, var(--sun) 40%, #e94560 80%, transparent 100%);
+    top: -30px; right: 10%;
+    width: 200px; height: 200px;
     border-radius: 50%;
-    box-shadow: 0 0 90px 30px rgba(233,69,96,0.4), 0 0 180px 60px rgba(251,191,36,0.2);
-    animation: sunRise 3s ease-out both;
+    background: conic-gradient(
+        #e94560 0deg, #f97316 60deg, #fbbf24 120deg,
+        #22c55e 180deg, #3b82f6 240deg, #8b5cf6 300deg, #e94560 360deg
+    );
+    -webkit-mask: radial-gradient(circle, transparent 35%, black 36%, black 47%, transparent 48%);
+    mask: radial-gradient(circle, transparent 35%, black 36%, black 47%, transparent 48%);
+    box-shadow: 0 0 60px 20px rgba(139,92,246,0.35), 0 0 120px 40px rgba(59,130,246,0.18);
+    animation: sunRise 3s ease-out both, spinRays 20s linear infinite;
 }
 @keyframes sunRise {
-    from { transform: translateY(70px); opacity: 0; }
-    to   { transform: translateY(0);    opacity: 1; }
+    from { transform: translateY(70px) rotate(0deg); opacity: 0; }
+    to   { transform: translateY(0) rotate(0deg);    opacity: 1; }
 }
 
 .sun-rays {
     position: absolute;
-    top: -85px; right: calc(12% - 65px);
-    width: 350px; height: 350px;
-    animation: spinRays 25s linear infinite;
-}
-.sun-rays::before, .sun-rays::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: repeating-conic-gradient(
-        rgba(233,69,96,0.15) 0deg 10deg,
-        transparent 10deg 20deg
-    );
+    top: -55px; right: calc(10% - 25px);
+    width: 250px; height: 250px;
     border-radius: 50%;
+    background: radial-gradient(circle, rgba(251,191,36,0.12) 0%, transparent 70%);
+    animation: sunRise 3s ease-out both;
+    pointer-events: none;
 }
-@keyframes spinRays { to { transform: rotate(360deg); } }
-
 /* Color Splotches (replacing clouds) */
 .clouds-layer { position: absolute; inset: 0; pointer-events: none; }
 .cloud {
