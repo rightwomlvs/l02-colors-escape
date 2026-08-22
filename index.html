@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -532,6 +532,85 @@ body {
     border: 1.5px solid #e94560;
 }
 
+/* ── Timer Chip ── */
+.timer-chip {
+    font-weight: 800; font-size: 0.95rem; color: #fbbf24;
+    background: rgba(251,191,36,0.12); border: 1.5px solid rgba(251,191,36,0.45);
+    padding: 0.15rem 0.7rem; border-radius: 999px;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Reading Skill Badges (PIRLS / Bloom / Genre) ── */
+.tag-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.65rem; }
+.tag-badge {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+    padding: 0.18rem 0.6rem; border-radius: 999px;
+    background: rgba(59,130,246,0.14); color: #93c5fd;
+    border: 1px solid rgba(59,130,246,0.35);
+}
+.tag-badge.tg-pirls { background: rgba(22,163,74,0.14); color: #86efac; border-color: rgba(22,163,74,0.4); }
+.tag-badge.tg-bloom { background: rgba(251,191,36,0.14); color: #fde68a; border-color: rgba(251,191,36,0.4); }
+.tag-badge.tg-genre { background: rgba(168,85,247,0.16); color: #d8b4fe; border-color: rgba(168,85,247,0.42); }
+
+/* ── Rearrange Question ── */
+.rearr-target {
+    min-height: 3.2rem; display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+    padding: 0.7rem 0.9rem; margin-bottom: 0.9rem;
+    border: 2px dashed rgba(148,163,184,0.5); border-radius: 12px;
+    background: rgba(255,255,255,0.04);
+}
+.rearr-target .ph { color: #64748b; font-style: italic; font-size: 0.88rem; }
+.rearr-chip {
+    padding: 0.42rem 0.85rem; border-radius: 10px; cursor: pointer;
+    font-weight: 600; font-size: 0.92rem; transition: all 0.18s ease;
+    background: rgba(255,255,255,0.85); color: var(--text-dark);
+    border: 2px solid rgba(233,69,96,0.35);
+}
+.rearr-chip:hover { transform: translateY(-2px); border-color: #e94560; }
+.rearr-chip.used { opacity: 0.35; pointer-events: none; }
+.rearr-chip.in-target { background: #fce4ec; color: #880e4f; border-color: #e94560; }
+
+/* ── Cloze Passage ── */
+.cloze-pass {
+    padding: 0.9rem 1.1rem; border-radius: 12px; margin-bottom: 1.1rem;
+    background: rgba(255,255,255,0.06); border-left: 4px solid #e94560;
+    font-size: 0.98rem; line-height: 1.8; color: #e2e8f0;
+}
+.cloze-pass .blank {
+    display: inline-block; min-width: 4.2em; text-align: center;
+    border-bottom: 2px solid #fbbf24; color: #fbbf24; font-weight: 700;
+}
+
+/* ── Type-in Question ── */
+.typein-row { display: flex; gap: 0.6rem; align-items: stretch; }
+.typein-input {
+    flex: 1; padding: 0.75rem 1rem; border-radius: 12px; font-size: 1rem;
+    font-family: inherit; outline: none;
+    background: rgba(255,255,255,0.08); color: #f1f5f9;
+    border: 2px solid rgba(148,163,184,0.4);
+}
+.typein-input:focus { border-color: #e94560; }
+.typein-btn {
+    padding: 0.75rem 1.4rem; border-radius: 12px; border: none; cursor: pointer;
+    font-weight: 700; font-size: 0.95rem; color: #fff;
+    background: linear-gradient(135deg, #e94560, #c2185b);
+}
+.typein-hint { font-size: 0.82rem; color: #94a3b8; margin-top: 0.45rem; }
+
+/* ── Wrong Answer Review (錯題本) ── */
+.review-box {
+    width: 100%; max-width: 720px; margin-top: 1.2rem; text-align: left;
+    background: rgba(255,255,255,0.05); border: 2px solid rgba(233,69,96,0.35);
+    border-radius: 16px; padding: 1.1rem 1.3rem;
+}
+.review-title { font-weight: 800; color: #fda4af; font-size: 0.98rem; margin-bottom: 0.7rem; }
+.review-item { padding: 0.65rem 0; border-top: 1px dashed rgba(148,163,184,0.3); }
+.review-item:first-of-type { border-top: none; }
+.review-q { font-size: 0.88rem; color: #e2e8f0; font-weight: 600; line-height: 1.55; }
+.review-ans { font-size: 0.82rem; margin-top: 0.25rem; line-height: 1.5; }
+.review-ans .ra-wrong { color: #fca5a5; }
+.review-ans .ra-right { color: #86efac; }
+
 .action-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; width: 100%; }
 .btn-next {
     padding: 0.95rem 3.4rem;
@@ -909,7 +988,10 @@ body {
         <div class="pg-wrap">
             <div class="pg-meta">
                 <span class="pg-level" id="pgLevel">Stage 1 ｜ 第 1 關</span>
-                <span class="pg-count" id="pgCount">0 / 5</span>
+                <span style="display:flex; gap:0.6rem; align-items:center;">
+                    <span class="timer-chip" id="timerChip">⏱ 00:00</span>
+                    <span class="pg-count" id="pgCount">0 / 5</span>
+                </span>
             </div>
             <div class="pg-track"><div class="pg-fill" id="pgFill" style="width:0%"></div></div>
         </div>
@@ -924,6 +1006,7 @@ body {
         <div class="q-card" id="qCard">
             <span class="q-tag" id="qTag">QUESTION</span>
             <div class="q-text" id="qText"></div>
+            <div id="clozeHost"></div>
             <div class="ans-grid" id="ansGrid"></div>
         </div>
 
@@ -961,6 +1044,7 @@ body {
             <button onclick="replayGame()" style="padding:0.8rem 2rem; border-radius:12px; font-weight:700; font-size:1.05rem; cursor:pointer; background:#dc2626; color:#fff; border:none;">🔄 Retry — 再挑戰一次</button>
             <button onclick="goHome()" style="padding:0.8rem 2rem; border-radius:12px; font-weight:700; font-size:1.05rem; cursor:pointer; background:#334155; color:#fff; border:none;">🏠 Return to Lab</button>
         </div>
+        <div class="review-box" id="failReview" style="display:none;"></div>
     </div>
 </div>
 
@@ -1061,6 +1145,8 @@ body {
             <div class="cert-score" id="certScore"></div>
             <div class="cert-date" id="certDate"></div>
         </div>
+
+        <div class="review-box" id="victoryReview" style="display:none;"></div>
 
         <p class="quote-block">
             “Colors, like features, follow the changes of the emotions.”<br>
@@ -1165,6 +1251,7 @@ const LEVEL_LABEL = {
 const QDB = {
     beginner: [
         {
+            type: 'choice',
             q: 'What does the abbreviation "logo" mean in the reading passage?',
             opts: [
                 'A designed symbol for a person or a group',
@@ -1173,382 +1260,331 @@ const QDB = {
                 'A special brand of electronic tablet'
             ],
             ans: 0,
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember'],
             expEn: '<b>[Vocabulary Meaning / 字彙理解]</b> "Logo" (n.) means a designed symbol that represents a person, company, or group. In the text, Toby and Helena are designing a logo for their school fair.',
             expZh: '【字彙理解】logo (n.) 意為「標誌、商標」，指代表個人或組織的設計符號。課文中 Toby 和 Helena 正在校園義賣中設計 logo。'
         },
         {
+            type: 'choice',
             q: 'Why did Toby and Helena look into the use of colors in marketing?',
             opts: [
                 'They wanted to find the best color for their logo',
-                'They wanted to join the handicraft club',
-                'They wanted to study at a marketing university',
-                'They wanted to become professional designers'
+                'They hoped to win a national design contest',
+                'They planned to become famous video bloggers',
+                'They needed to save money on painting supplies'
             ],
             ans: 0,
+            tags: ['PIRLS 直接推論 Infer', 'Bloom 理解 Understand'],
             expEn: '<b>[Reading Comprehension / 課文文意]</b> Toby and Helena had different opinions about logo colors, so they decided to research marketing psychology to find the best color.',
             expZh: '【課文文意】Toby 和 Helena 對 logo 顏色看法不同，因此他們決定研究行銷心理學，找出最適合的顏色。'
         },
         {
-            q: 'According to the research, within how many seconds do people make a subconscious judgment about a product?',
+            type: 'choice',
+            q: 'According to the reading, how quickly do people make a subconscious judgment about a product?',
             opts: [
-                '90 seconds',
-                '30 seconds',
-                '60 seconds',
-                '120 seconds'
+                'Within 90 seconds of seeing it',
+                'After several days of thinking',
+                'In one full week of testing',
+                'Only after trying the product out'
             ],
             ans: 0,
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember', '文體·數據佐證 Data'],
             expEn: '<b>[Text Detail / 課文細節]</b> The textbook states that people make a subconscious judgment about a product "within 90 seconds" after they see it, and colors influence more than 60% of that judgment.',
             expZh: '【課文細節】課文明確指出，人們在看到產品後「90 秒內」就會做出下意識判斷，而色彩影響超過 60% 的判斷。'
         },
         {
-            q: 'Which color is often linked to feelings of love and passion according to the reading?',
+            type: 'choice',
+            q: 'Red stirs up strong feelings of love and excitement. Which brands use red in their logos?',
             opts: [
-                'Red',
-                'Blue',
-                'Green',
-                'Yellow'
+                'Netflix and Coca-Cola',
+                'Post-it and McDonald\'s',
+                'Chanel and Sony',
+                'Intel and Ford'
             ],
             ans: 0,
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember'],
             expEn: '<b>[Color Association / 色彩關聯]</b> The text states: "Red can stir up strong feelings of love and passion and is often linked to excitement." Netflix and Coca-Cola use red.',
-            expZh: '【色彩關聯】課文指出：紅色能激起愛情與热情的強烈情感，並常與興奮聯繫。Netflix 和 Coca-Cola 使用紅色。'
+            expZh: '【色彩關聯】課文指出：紅色能激起愛情與熱情的強烈情感，並常與興奮聯繫。Netflix 和 Coca-Cola 使用紅色。'
         },
         {
-            q: 'What does black symbolize in marketing according to the reading?',
+            type: 'choice',
+            q: 'Which high-end brands choose black to express elegance and status?',
             opts: [
-                'Elegance and status',
-                'Happiness and energy',
-                'Intelligence and trust',
-                'Calm and relaxation'
+                'Chanel and Sony',
+                'Netflix and Coca-Cola',
+                'Intel and Ford',
+                'Post-it and McDonald\'s'
             ],
             ans: 0,
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember'],
             expEn: '<b>[Color Association / 色彩關聯]</b> "Black gives a sense of elegance and status, so it is often chosen by high-end brands such as Chanel and Sony."',
             expZh: '【色彩關聯】「黑色傳達優雅與地位感，因此常被 Chanel 和 Sony 等高端品牌選用。」'
         },
         {
-            q: 'Which companies are mentioned as fans of the color blue in the passage?',
+            type: 'choice',
+            q: 'According to the reading, what does blue symbolize?',
             opts: [
-                'Intel, Ford, and Samsung',
-                'Netflix, Coca-Cola, and McDonald\'s',
-                'Chanel, Sony, and Apple',
-                'Post-it, Nike, and Adidas'
+                'Intelligence and trust',
+                'Anger and danger',
+                'Happiness and energy',
+                'Mystery and magic'
             ],
             ans: 0,
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember'],
             expEn: '<b>[Reading Detail / 課文細節]</b> The passage says: "It is believed that blue symbolizes intelligence and trust. That\'s probably why blue is commonly used in Intel, Ford, Samsung logos."',
             expZh: '【課文細節】課文提到：「一般相信藍色象徵智慧與信任。這可能是 Intel、Ford、Samsung 的 logo 常用藍色的原因。」'
         },
         {
-            q: 'What feeling do Post-it and McDonald\'s try to create with their yellow logos?',
+            type: 'choice',
+            q: 'Businesses hoping to express happiness turn to yellow. What impression do brands like Post-it and McDonald\'s create with yellow?',
             opts: [
-                'Fun and energy',
-                'Elegance and status',
-                'Intelligence and trust',
-                'Love and passion'
+                'An impression of fun and energy',
+                'A feeling of luxury and wealth',
+                'A sense of sadness and loss',
+                'A mood of trust and safety'
             ],
             ans: 0,
+            tags: ['PIRLS 直接推論 Infer', 'Bloom 理解 Understand', '結構·因果 Cause–Effect'],
             expEn: '<b>[Reading Comprehension / 課文文意]</b> "Businesses which hope to express the idea of happiness turn to yellow. Brands like Post-it and McDonald\'s have made this color a major part of their logos, trying to create an impression of fun and energy."',
             expZh: '【課文文意】課文提到 Post-it 和 McDonald\'s 用黃色來營造「fun and energy」（趣味與活力）的印象。'
         },
         {
-            q: 'What did Toby and Helena eventually choose as their logo color and why?',
+            type: 'choice',
+            q: '"The small shop\'s new cookies sold like hot cakes." This sentence means the cookies _______.',
             opts: [
-                'Yellow, because it brings a sense of joy and fun',
-                'Red, because it stirs up passion and excitement',
-                'Blue, because it symbolizes intelligence and trust',
-                'Black, because it shows elegance and status'
+                'were sold very quickly in large amounts',
+                'were sold very slowly at high prices',
+                'were given away for free to customers',
+                'were actually made from real cake mix'
             ],
             ans: 0,
-            expEn: '<b>[Main Idea / 主旨統整]</b> "Because they want a color that brings a sense of joy and fun to the fair, they believe yellow will be the best choice for their logo."',
-            expZh: '【主旨統整】課文結尾：「因為他們想要一個能帶來快樂與趣味感的顏色，他們認為黃色是 logo 的最佳選擇。」'
-        },
-        {
-            q: 'The phrase "sell like hot cakes" in the reading means _______.',
-            opts: [
-                'to sell very quickly or in large amounts',
-                'to bake delicious desserts for customers',
-                'to become extremely hot during summer',
-                'to have a heated argument about prices'
-            ],
-            ans: 0,
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 理解 Understand', '特色·慣用語 Idiom'],
             expEn: '<b>[Idiom Analysis / 片語解析]</b> "Sell like hot cakes" is an idiom meaning to sell very quickly or in large amounts.',
             expZh: '【片語解析】"sell like hot cakes" 為本課常用成語，意為「熱賣、銷售一空」。'
         },
         {
-            q: 'What does the idiom "no wonder" mean in the sentence "No wonder companies like Netflix make so much use of it"?',
-            opts: [
-                'It is not surprising that...',
-                'It is a wonderful discovery',
-                'There is no reason to wonder',
-                'Nobody knows the answer'
-            ],
+            type: 'rearrange',
+            q: 'Rearrange the chunks to form a correct sentence. 點選語塊，重組出正確句子。',
+            chunks: ['Red', 'can stir up', 'strong feelings of love and excitement.'],
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 應用 Apply', '特色·動詞片語 stir up'],
+            expEn: '<b>[Sentence Building / 句子重組]</b> "Red can stir up strong feelings of love and excitement." The phrasal verb "stir up" means to cause or awaken strong feelings.',
+            expZh: '【句子重組】紅色能激起愛與興奮的強烈情感。動詞片語 stir up 意為「激起、喚起（情感）」。'
+        },
+        {
+            type: 'rearrange',
+            q: 'Rearrange the chunks to form a correct sentence. 點選語塊，重組出正確句子。',
+            chunks: ['Blue symbolizes', 'intelligence and trust,', 'so major companies', 'love this color.'],
+            tags: ['Bloom 應用 Apply', '結構·因果 Cause–Effect'],
+            expEn: '<b>[Cause and Effect / 因果結構]</b> The connector "so" links the reason (blue symbolizes trust) with the result (companies love it). This cause-effect pattern is common in expository writing.',
+            expZh: '【因果結構】連接詞 so 連接原因（藍色象徵信任）與結果（企業愛用），是說明文常見的因果句型。'
+        },
+        {
+            type: 'rearrange',
+            q: 'Rearrange the chunks to form a correct sentence. 點選語塊，重組出正確句子。',
+            chunks: ['Yellow brings', 'a sense of joy', 'to people who see it.'],
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 應用 Apply'],
+            expEn: '<b>[Sentence Building / 句子重組]</b> "Yellow brings a sense of joy to people who see it." Note the structure: bring + something + to someone.',
+            expZh: '【句子重組】黃色為看見它的人帶來喜悅感。注意句型：bring + 事物 + to + 對象。'
+        },
+        {
+            type: 'rearrange',
+            q: 'Rearrange the chunks to form a correct sentence. 點選語塊，重組出正確句子。',
+            chunks: ['Black gives', 'a sense of elegance', 'and status', 'to high-end brands.'],
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 應用 Apply'],
+            expEn: '<b>[Sentence Building / 句子重組]</b> "Black gives a sense of elegance and status to high-end brands." The verb "give" here means to produce a particular feeling or quality.',
+            expZh: '【句子重組】黑色為高端品牌帶來優雅與地位感。give 在此指「帶來（某種感覺或特質）」。'
+        },
+        {
+            type: 'cloze',
+            q: 'Choose the correct number to complete the passage. 選出正確數字填入空格。',
+            passage: 'People make a subconscious judgment about a product within ____ seconds after they first see it.',
+            opts: ['90', '19', '900', 'nine'],
             ans: 0,
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember'],
+            expEn: '<b>[Text Detail / 課文細節]</b> The reading states that people judge a product within 90 seconds, and colors drive more than 60% of that judgment.',
+            expZh: '【課文細節】課文指出人們在 90 秒內對產品形成判斷，其中色彩影響超過六成。'
+        },
+        {
+            type: 'cloze',
+            q: 'Choose the correct number to complete the passage. 選出正確數字填入空格。',
+            passage: 'Colors influence more than ____ percent of that judgment, so choosing the right color really matters.',
+            opts: ['60', '6', '16', '96'],
+            ans: 0,
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember'],
+            expEn: '<b>[Text Detail / 課文細節]</b> According to the text, colors influence more than 60% of people\'s subconscious judgment about a product.',
+            expZh: '【課文細節】根據課文，色彩影響人們對產品下意識判斷的比例超過 60%。'
+        },
+        {
+            type: 'typein',
+            q: 'Type the word: a designed symbol that represents a company or group. 輸入單字：代表公司或團體的設計符號。',
+            answers: ['logo'],
+            hint: '開頭字母 l＿＿＿（4 個字母）',
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember'],
+            expEn: '<b>[Vocabulary Recall / 字彙回想]</b> A "logo" is a designed symbol that represents a person, company, or organization.',
+            expZh: '【字彙回想】logo 意為「標誌」，是代表個人、公司或組織的設計符號。'
+        },
+        {
+            type: 'typein',
+            q: '"No w______!" means it is not surprising that something happened. Type the missing word. 輸入缺少的單字。',
+            answers: ['wonder'],
+            hint: 'no _______（難怪；7 個字母）',
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 理解 Understand', '特色·慣用語 Idiom'],
             expEn: '<b>[Idiom Analysis / 片語解析]</b> "No wonder" means "it is not surprising" or "it is easy to understand why."',
             expZh: '【片語解析】"no wonder" 意為「難怪、不足為奇」，用來表達某事不令人意外。'
-        },
-        {
-            q: 'The word "prefer" in this lesson is closest in meaning to _______.',
-            opts: [
-                'to like something better than another',
-                'to make something prettier',
-                'to prepare something in advance',
-                'to predict something will happen'
-            ],
-            ans: 0,
-            expEn: '<b>[Vocabulary Meaning / 字彙理解]</b> "Prefer" (v.) means to like someone or something better than another (較喜歡).',
-            expZh: '【字彙理解】prefer (v.) 意為「較喜歡、寧可」，表示相比另一選項更偏好某事物。'
-        },
-        {
-            q: 'What is the main purpose of the reading "Colors Speak Louder than Words"?',
-            opts: [
-                'To explain how colors influence people\'s feelings and buying decisions',
-                'To teach students how to paint colorful pictures',
-                'To describe the history of color photography',
-                'To compare different types of art exhibitions'
-            ],
-            ans: 0,
-            expEn: '<b>[Main Idea / 主旨統整]</b> The reading explains how different colors are used in marketing to influence consumer emotions and purchasing decisions.',
-            expZh: '【主旨統整】本課主要說明不同色彩在行銷中如何影響消費者情緒與購買決策。'
-        },
-        {
-            q: 'The word "subconscious" in the reading means _______.',
-            opts: [
-                'happening without conscious awareness',
-                'extremely loud and noisy',
-                'completely underwater',
-                'extremely expensive'
-            ],
-            ans: 0,
-            expEn: '<b>[Vocabulary Meaning / 字彙理解]</b> "Subconscious" (adj.) means happening below the level of conscious awareness (下意識的).',
-            expZh: '【字彙理解】subconscious (adj.) 意為「下意識的、潛意識的」，指在不自覺的情況下產生的行為或判斷。'
-        },
-        {
-            q: 'The phrase "in order to" in the reading is used to express _______.',
-            opts: [
-                'purpose or goal',
-                'time sequence',
-                'cause and effect',
-                'contrast or comparison'
-            ],
-            ans: 0,
-            expEn: '<b>[Phrase Usage / 片語用法]</b> "In order to" means "for the purpose of" or "as a means of reaching a goal." It expresses purpose.',
-            expZh: '【片語用法】"in order to" 意為「為了……」，用來表達目的或目標。'
-        },
-        {
-            q: 'What does "look into" mean when Toby and Helena decided to "look into the use of colors"?',
-            opts: [
-                'To investigate or examine something',
-                'To stare directly at something',
-                'To look through a telescope',
-                'To glance quickly at something'
-            ],
-            ans: 0,
-            expEn: '<b>[Phrase Meaning / 片語理解]</b> "Look into" means to investigate or examine something carefully (調查、探究).',
-            expZh: '【片語理解】"look into" 意為「調查、探究」，指仔細研究某事物。'
-        },
-        {
-            q: 'According to the passage, people tend to connect different colors to _______.',
-            opts: [
-                'specific feelings and ideas',
-                'expensive restaurants',
-                'school examination scores',
-                'medical treatments'
-            ],
-            ans: 0,
-            expEn: '<b>[Reading Detail / 課文細節]</b> The text states: "People tend to connect different colors to specific feelings and ideas."',
-            expZh: '【課文細節】課文指出：「人們傾向將不同色彩與特定感受和想法聯繫起來。」'
         }
     ],
     expert: [
         {
-            q: 'Choose the correct participle form: "Toby and Helena did some research, _______ that people make a subconscious judgment within 90 seconds."',
-            opts: [
-                'finding',
-                'found',
-                'to find',
-                'being found'
-            ],
+            type: 'choice',
+            q: '____ the pros and cons of different colors, Toby and Helena looked into marketing psychology.',
+            opts: ['Finding', 'Found', 'To finding', 'Being found'],
             ans: 0,
-            expEn: '<b>[Participle Clause / 分詞構句]</b> The original sentence uses a coordinate clause with the same subject. We remove the subject and conjunction, changing the verb to V-ing: "finding."',
+            tags: ['Bloom 應用 Apply', '特色·分詞構句 Participle'],
+            expEn: '<b>[Participle Clause / 分詞構句]</b> The original sentence uses coordinate clauses with the same subject. We remove the subject and conjunction, changing the verb to V-ing: "finding."',
             expZh: '【分詞構句】原始句子前後主詞相同，省略連接詞和第二子句主詞，將動詞改為現在分詞 V-ing：finding。'
         },
         {
-            q: 'Complete: "The South African flag is colorful, _______ the country\'s diverse cultures."',
-            opts: [
-                'showing',
-                'shown',
-                'to show',
-                'being shown'
-            ],
+            type: 'choice',
+            q: 'Students made colorful flags, ____ the diverse cultures of the school.',
+            opts: ['showing', 'shown', 'showed', 'to showing'],
             ans: 0,
+            tags: ['Bloom 應用 Apply', '特色·分詞構句 Participle'],
             expEn: '<b>[Participle Clause / 分詞構句]</b> The flag actively shows (主動) the diverse cultures, so we use the present participle "showing."',
             expZh: '【分詞構句】國旗「主動展示」多樣文化（主動動作），故用現在分詞 showing。'
         },
         {
-            q: 'Choose the correct form: "Brands like Post-it and McDonald\'s have made yellow a major part of their logos, _______ to create an impression of fun."',
-            opts: [
-                'trying',
-                'tried',
-                'to try',
-                'being tried'
-            ],
+            type: 'choice',
+            q: 'McDonald\'s uses yellow in its logo, ____ an impression of fun and energy.',
+            opts: ['trying', 'tried', 'tries', 'try'],
             ans: 0,
+            tags: ['Bloom 應用 Apply', '特色·分詞構句 Participle'],
             expEn: '<b>[Participle Clause / 分詞構句]</b> The brands actively try (主動) to create an impression, so we use the present participle "trying."',
             expZh: '【分詞構句】品牌「主動嘗試」營造趣味印象（主動動作），故用現在分詞 trying。'
         },
         {
-            q: 'Complete: "I looked out of the window, _______ by the ocean view."',
-            opts: [
-                'amazed',
-                'amazing',
-                'to amaze',
-                'being amazed'
-            ],
+            type: 'choice',
+            q: '____ by the colorful stage design, the visitors stopped to take photos.',
+            opts: ['Amazed', 'Amazing', 'To amaze', 'Amaze'],
             ans: 0,
-            expEn: '<b>[Participle Clause / 分詞構句]</b> I was amazed (被動) by the view, so we use the past participle "amazed."',
-            expZh: '【分詞構句】我「被」海景所驚嘆（被動動作），故用過去分詞 amazed。'
+            tags: ['Bloom 分析 Analyze', '特色·分詞構句 Participle'],
+            expEn: '<b>[Participle Clause / 分詞構句]</b> The visitors were amazed (被動) by the view, so we use the past participle "amazed."',
+            expZh: '【分詞構句】參觀者「被」舞台設計所驚嘆（被動動作），故用過去分詞 amazed。'
         },
         {
-            q: 'Which sentence correctly uses "It is said that..."?',
-            opts: [
-                'It is said that yellow is the color that best grabs people\'s attention.',
-                'It is said that yellow is the color that best grab people\'s attention.',
-                'It is said that yellow are the color that best grabs people\'s attention.',
-                'It is said that yellow were the color that best grabs people\'s attention.'
-            ],
+            type: 'choice',
+            q: '____ is said that yellow can grab people\'s attention easily.',
+            opts: ['It', 'This', 'That', 'There'],
             ans: 0,
-            expEn: '<b>[It is said that... / 據說……]</b> "It is said that + S + V" uses present tense for general truths. "Yellow" is singular, so "is" and "grabs" are correct.',
-            expZh: '【It is said that...】"It is said that + S + V" 用於陳述事實，時態前後一致。yellow 為單數，動詞用 is 和 grabs。'
+            tags: ['Bloom 應用 Apply', '句型·It is said that...'],
+            expEn: '<b>[It is said that... / 據說……]</b> "It is said that + S + V" uses present tense for general truths. "It" is the dummy subject here.',
+            expZh: '【It is said that...】"It is said that + S + V" 用於陳述一般事實，It 為虛主詞。'
         },
         {
-            q: 'Complete: "It is believed that blue _______ intelligence and trust."',
-            opts: [
-                'symbolizes',
-                'symbolize',
-                'symbolized',
-                'symbolizing'
-            ],
+            type: 'choice',
+            q: '____ what others think, the artist painted the wall bright red.',
+            opts: ['Not caring', 'Not cared', 'No caring', 'Not to caring'],
             ans: 0,
-            expEn: '<b>[It is believed that... / 據信……]</b> "It is believed that + S + V" for general truths uses present tense. "Blue" is third-person singular, so "symbolizes."',
-            expZh: '【It is believed that...】陳述一般事實用現在式，blue 為第三人稱單數，動詞用 symbolizes。'
-        },
-        {
-            q: 'Choose the correct participle: "Some people just want the best quality, _______ about the price."',
-            opts: [
-                'not caring',
-                'not cared',
-                'not to care',
-                'not being cared'
-            ],
-            ans: 0,
+            tags: ['Bloom 應用 Apply', '特色·否定分詞 Not + V-ing'],
             expEn: '<b>[Negative Participle / 否定分詞構句]</b> When expressing negation in a participle clause, add "not" before the V-ing form: "not caring."',
             expZh: '【否定分詞構句】分詞構句表否定時，在分詞前加 not：not caring。'
         },
         {
-            q: 'Which sentence correctly uses the participle clause from the reading?',
+            type: 'choice',
+            q: '"Every logo needs the right one." The word "one" refers to _______.',
             opts: [
-                'Green, white, and red are the colors on the Italian flag, symbolizing hope, faith, and charity.',
-                'Green, white, and red are the colors on the Italian flag, symbolized hope, faith, and charity.',
-                'Green, white, and red are the colors on the Italian flag, to symbolize hope, faith, and charity.',
-                'Green, white, and red are the colors on the Italian flag, being symbolized hope, faith, and charity.'
+                'color',
+                'logo',
+                'company',
+                'customer'
             ],
             ans: 0,
-            expEn: '<b>[Participle Clause from Text / 課文分詞構句]</b> The colors actively symbolize (主動) hope, faith, and charity, so we use "symbolizing."',
-            expZh: '【課文分詞構句】顏色「主動象徵」希望、信仰與慈善（主動動作），故用現在分詞 symbolizing。'
-        },
-        {
-            q: 'Choose the correct word: "Colors influence more than 60% of that judgment. This shows color is so important that every logo needs the right _______."',
-            opts: [
-                'one',
-                'ones',
-                'that',
-                'this'
-            ],
-            ans: 0,
+            tags: ['PIRLS 直接推論 Infer', 'Bloom 分析 Analyze'],
             expEn: '<b>[Pronoun Reference / 代名詞指涉]</b> "One" is used as a pronoun to replace "color" (singular, countable). "Every logo needs the right one" = the right color.',
             expZh: '【代名詞指涉】one 用來代替單數可數名詞 color。"Every logo needs the right one" = 每個 logo 都需要正確的顏色。'
         },
         {
-            q: 'In the sentence "It is said that cherry tomatoes with honey taste like strawberries," the structure "It is said that..." serves as _______.',
+            type: 'choice',
+            q: 'In "Similarly, high-end black gives a sense of elegance...", the word "similarly" connects _______.',
             opts: [
-                'a dummy subject with a that-clause as the real subject',
-                'a direct quote from a famous person',
-                'a question about food combinations',
-                'a command telling people what to eat'
+                'two ideas that share a similar pattern',
+                'two completely unrelated topics',
+                'a sharp contrast between two ideas',
+                'the final conclusion of a paragraph'
             ],
             ans: 0,
-            expEn: '<b>[Grammar Analysis / 文法分析]</b> "It" is a dummy subject (虛主詞). The real subject is the that-clause. This structure expresses general beliefs or reported facts.',
-            expZh: '【文法分析】It 為虛主詞，真正的主詞為 that 子句。此結構用來表達普遍看法或轉述事實。'
+            tags: ['PIRLS 詮釋整合 Interpret', 'Bloom 分析 Analyze', '特色·轉承詞 Signal Word'],
+            expEn: '<b>[Signal Word Usage / 轉承詞用法]</b> "Similarly" (adv.) shows that the next idea follows the same pattern as the previous one, linking paragraphs smoothly.',
+            expZh: '【轉承詞用法】similarly (adv.) 表示下一個想法與前一個想法模式相同，用於段落間順暢銜接。'
         },
         {
-            q: 'Choose the correct participle: "Lisa read the message, _______ at all."',
-            opts: [
-                'not feeling',
-                'felt not',
-                'not felt',
-                'she didn\'t feel'
-            ],
-            ans: 0,
-            expEn: '<b>[Negative Participle / 否定分詞構句]</b> Lisa actively (主動) did not feel surprised, so we use "not feeling" with the negative before the V-ing.',
-            expZh: '【否定分詞構句】Lisa 主動「沒有感到」驚訝（主動動作），否定詞 not 放在 V-ing 前：not feeling。'
+            type: 'rearrange',
+            q: 'Rearrange the chunks to form a correct sentence. 點選語塊，重組出正確句子。',
+            chunks: ['It is believed', 'that blue symbolizes', 'intelligence and trust,', 'which is why', 'major companies love blue.'],
+            tags: ['Bloom 應用 Apply', '句型·It is believed that...'],
+            expEn: '<b>[It is believed that... / 據信……]</b> "It is believed that + S + V" reports general beliefs. The relative "which is why" adds the result clause.',
+            expZh: '【It is believed that...】據信……用於陳述普遍看法，which is why 帶出結果子句。'
         },
         {
-            q: 'Complete: "It is reported that several buildings _______ in a fire yesterday."',
-            opts: [
-                'were damaged',
-                'are damaged',
-                'will damage',
-                'damage'
-            ],
-            ans: 0,
-            expEn: '<b>[It is reported that... / 據報導……]</b> "It is reported that + S + V-ed" for past events. The buildings were damaged (被動) yesterday.',
-            expZh: '【It is reported that...】報導過去事件用 V-ed。 buildings 被損害（被動），故用 were damaged。'
+            type: 'rearrange',
+            q: 'Rearrange the chunks to form a correct sentence. 點選語塊，重組出正確句子。',
+            chunks: ['Trying to create an impression of fun,', 'these brands', 'chose yellow', 'for their logos.'],
+            tags: ['Bloom 應用 Apply', '特色·分詞構句 Participle'],
+            expEn: '<b>[Participle Clause / 分詞構句]</b> The participle phrase "Trying to..." modifies "these brands." Because the brands actively try, we use V-ing.',
+            expZh: '【分詞構句】分詞片語 Trying to... 修飾 these brands；品牌主動嘗試，故用 V-ing。'
         },
         {
-            q: 'According to the text, the participle clause "finding that people make a subconscious judgment" simplifies which original structure?',
-            opts: [
-                'Toby and Helena did some research, and they found that...',
-                'Toby and Helena did some research, but they found that...',
-                'Toby and Helena did some research, so they found that...',
-                'Toby and Helena did some research, or they found that...'
-            ],
-            ans: 0,
-            expEn: '<b>[Participle Clause Origin / 分詞構句起源]</b> Participle clauses simplify coordinate clauses connected by "and" when both clauses share the same subject.',
-            expZh: '【分詞構句起源】分詞構句用來簡化由 and 連接的對等子句，當前後子句主詞相同時即可進行簡化。'
+            type: 'rearrange',
+            q: 'Rearrange the chunks to form a correct sentence. 點選語塊，重組出正確句子。',
+            chunks: ['Not knowing which color to choose,', 'Toby asked Helena', 'to look into', 'marketing psychology.'],
+            tags: ['Bloom 應用 Apply', '特色·否定分詞 Not + V-ing'],
+            expEn: '<b>[Negative Participle / 否定分詞構句]</b> "Not knowing..." places the negation before the V-ing. It explains why Toby asked for help.',
+            expZh: '【否定分詞構句】否定詞 not 放在 V-ing 前：Not knowing...，用來說明 Toby 求助的原因。'
         },
         {
-            q: 'In the conversation, Leon asks "I wonder why they are black." The phrase "I wonder why" expresses _______.',
-            opts: [
-                'curiosity and a desire to know the reason',
-                'anger and frustration about the color',
-                'complete agreement with the statement',
-                'a command to change the color'
-            ],
-            ans: 0,
-            expEn: '<b>[Conversation Function / 對話功能]</b> "I wonder why" is a polite way to express curiosity and ask for the reason behind something.',
-            expZh: '【對話功能】"I wonder why" 是禮貌地表達好奇並詢問原因的說法。'
+            type: 'rearrange',
+            q: 'Rearrange the chunks to form a correct sentence. 點選語塊，重組出正確句子。',
+            chunks: ['It is reported that', 'the new logo', 'attracts many young customers', 'around the world.'],
+            tags: ['Bloom 應用 Apply', '句型·It is reported that...'],
+            expEn: '<b>[It is reported that... / 據報導……]</b> This passive reporting pattern presents information objectively, common in news and marketing texts.',
+            expZh: '【It is reported that...】被動報導句型客觀陳述資訊，常見於新聞與行銷文本。'
         },
         {
-            q: 'Choose the best response: "Black paint was the cheapest option for taxis after World War II." — "That\'s interesting." This response shows _______.',
-            opts: [
-                'acknowledgment and mild surprise',
-                'strong disagreement and anger',
-                'complete confusion and fear',
-                'total boredom and disinterest'
-            ],
+            type: 'cloze',
+            q: 'Choose the correct word to complete the passage. 選出正確的字填入空格。',
+            passage: 'Toby kept looking into color psychology, ____ to find the perfect match for the school fair.',
+            opts: ['hoping', 'hoped', 'hopes', 'hope'],
             ans: 0,
-            expEn: '<b>[Speaking Tips / 口語技巧]</b> "That\'s interesting" acknowledges new information with mild surprise, a common conversational response.',
-            expZh: '【口語技巧】"That\'s interesting" 用來表達對新資訊的認同與些許驚訝，是常見的對話回應方式。'
+            tags: ['Bloom 應用 Apply', '特色·分詞構句 Participle'],
+            expEn: '<b>[Participle Clause / 分詞構句]</b> Toby actively hopes (主動), so we use the present participle "hoping" to show purpose alongside the main action.',
+            expZh: '【分詞構句】Toby 主動「希望」（主動動作），用現在分詞 hoping 表示伴隨主要動作的目的。'
         },
         {
-            q: 'In the reading, "Similarly, high-end black gives a sense of elegance..." the word "similarly" is used to _______.',
-            opts: [
-                'connect two ideas that share a similar pattern',
-                'introduce a completely new and unrelated topic',
-                'show a sharp contrast between two ideas',
-                'end the paragraph with a final conclusion'
-            ],
+            type: 'cloze',
+            q: 'Choose the correct word to complete the passage. 選出正確的字填入空格。',
+            passage: '____ happens at the fair, the colorful booth will attract many visitors.',
+            opts: ['Whatever', 'However', 'Whenever', 'Wherever'],
             ans: 0,
-            expEn: '<b>[Signal Word Usage / 連接詞用法]</b> "Similarly" (adv.) is used to show that the next idea follows the same pattern as the previous one.',
-            expZh: '【連接詞用法】similarly (adv.) 用來表達下一個想法與前一個想法遵循相同的模式。'
+            tags: ['Bloom 應用 Apply', '句型·no matter wh- / wh-ever'],
+            expEn: '<b>[wh-ever Pattern / wh-ever 句型]</b> "Whatever happens" = "no matter what happens." The wh-ever word works as the subject of the clause.',
+            expZh: '【wh-ever 句型】Whatever happens = no matter what happens（無論發生什麼事），whatever 同時擔任子句主詞。'
+        },
+        {
+            type: 'typein',
+            q: 'Complete with the correct form: "The simpler the logo, the ____ (easy) it is to remember." Type the word. 輸入正確形式。',
+            answers: ['easier'],
+            hint: 'the + 比較級..., the + 比較級...（easy 的比較級）',
+            tags: ['Bloom 應用 Apply', '句型·雙重比較級 Double Comparative'],
+            expEn: '<b>[Double Comparative / 雙重比較級]</b> "The + 比較級 S + V, the + 比較級 S + V" expresses that two things change together: simpler logo → easier to remember.',
+            expZh: '【雙重比較級】「The + 比較級…, the + 比較級…」表示兩者同時變化：logo 越簡單 → 越容易記住。'
+        },
+        {
+            type: 'typein',
+            q: '"S______ judgments happen automatically within 90 seconds." Type the word from the reading. 輸入課文單字。',
+            answers: ['subconscious'],
+            hint: 's＿＿＿＿＿＿＿＿（12 個字母；下意識的）',
+            tags: ['PIRLS 提取訊息 Retrieve', 'Bloom 記憶 Remember'],
+            expEn: '<b>[Vocabulary Recall / 字彙回想]</b> "Subconscious" (adj.) means happening below the level of conscious awareness — people judge products subconsciously within 90 seconds.',
+            expZh: '【字彙回想】subconscious (adj.) 意為「下意識的」，人們在 90 秒內會下意識地對產品做出判斷。'
         }
     ]
 };
@@ -1607,7 +1643,9 @@ document.addEventListener('click', function startBGMOnce() {
 let G = {
     diff: null, levels: null,
     cur: 0, correct: 0,
-    questions: [], studentName: '', currentAnsIdx: 0
+    questions: [], studentName: '', currentAnsIdx: 0,
+    wrong: [], startTime: 0, timerInt: null, elapsedMs: 0,
+    answered: false
 };
 
 /* ─────────────────────────────────
@@ -1639,7 +1677,9 @@ function switchTo(id, afterFn) {
 function goHome() {
     stopBGM();
     stopAmbient();
-    G = { diff: null, levels: null, cur: 0, correct: 0, questions: [], studentName: '', currentAnsIdx: 0 };
+    stopTimer();
+    G = { diff: null, levels: null, cur: 0, correct: 0, questions: [], studentName: '', currentAnsIdx: 0,
+          wrong: [], startTime: 0, timerInt: null, elapsedMs: 0, answered: false };
     document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('picked'));
     document.getElementById('btnStart').disabled = true;
     switchTo('homeScreen', () => { if (soundOn) playAmbient(); });
@@ -1656,12 +1696,33 @@ function startGame() {
     }
     G.questions = pool.slice(0, G.levels);
     G.cur = 0; G.correct = 0;
+    G.wrong = [];
+    G.startTime = Date.now();
+    G.elapsedMs = 0;
+    if (G.timerInt) clearInterval(G.timerInt);
+    G.timerInt = setInterval(updateTimerChip, 1000);
+    updateTimerChip();
     stopAmbient();
     playBGM();
     switchTo('gameScreen', () => {
         buildFragRow();
         renderLevel();
     });
+}
+
+/* ── Cumulative Timer ── */
+function fmtTime(ms) {
+    const t = Math.floor(ms / 1000);
+    return String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0');
+}
+function updateTimerChip() {
+    if (!G.startTime) return;
+    const el = document.getElementById('timerChip');
+    if (el) el.textContent = '⏱ ' + fmtTime(Date.now() - G.startTime);
+}
+function stopTimer() {
+    if (G.timerInt) { clearInterval(G.timerInt); G.timerInt = null; }
+    if (G.startTime) G.elapsedMs = Date.now() - G.startTime;
 }
 
 function buildFragRow() {
@@ -1678,34 +1739,24 @@ function buildFragRow() {
 function renderLevel() {
     const q  = G.questions[G.cur];
     const sc = SCENARIOS[G.cur % SCENARIOS.length];
-    const LT = ['A','B','C','D'];
+    G.answered = false;
 
     document.getElementById('pgLevel').innerHTML = `Stage ${G.cur + 1} ｜ <span style="font-size:0.88em; font-family:'Noto Sans TC';">第 ${G.cur + 1} 關</span>`;
     document.getElementById('pgCount').textContent  = `${G.cur} / ${G.levels}`;
     document.getElementById('pgFill').style.width   = `${(G.cur / G.levels) * 100}%`;
     document.getElementById('sceneIcon').textContent = sc.icon;
     document.getElementById('sceneBody').innerHTML  = `<div class="scene-en">${sc.en}</div><div class="scene-zh">${sc.zh}</div>`;
-    document.getElementById('qTag').textContent = `STAGE ${G.cur + 1} ｜ ${G.diff.toUpperCase()}`;
+    const typeLabel = { choice: '選擇 Choice', cloze: '克漏字 Cloze', rearrange: '重組 Rearrange', typein: '填空 Type-in' }[q.type] || '';
+    document.getElementById('qTag').textContent = `STAGE ${G.cur + 1} ｜ ${typeLabel}`;
     document.getElementById('qText').textContent = q.q;
 
-    // Option Randomizer
-    const perm = [0, 1, 2, 3];
-    for (let i = perm.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [perm[i], perm[j]] = [perm[j], perm[i]];
+    if (q.type === 'rearrange') {
+        renderRearrange(q);
+    } else if (q.type === 'typein') {
+        renderTypein(q);
+    } else {
+        renderOptions(q);
     }
-    const displayOpts = perm.map(idx => q.opts[idx]);
-    G.currentAnsIdx = perm.indexOf(q.ans); 
-
-    const grid = document.getElementById('ansGrid');
-    grid.innerHTML = '';
-    displayOpts.forEach((opt, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'ans-btn'; btn.id = `ab${i}`;
-        btn.innerHTML = `<span class="ans-badge">${LT[i]}</span><span>${opt}</span>`;
-        btn.onclick = () => handleAnswer(i);
-        grid.appendChild(btn);
-    });
 
     document.getElementById('fbBox').className = 'fb-box';
     document.getElementById('fbFrag').className = 'fb-frag';
@@ -1716,18 +1767,134 @@ function renderLevel() {
     speak(sc.en.replace(/^\[.*?\]\s*/, ''));
 }
 
-function handleAnswer(idx) {
+/* ── Type: choice / cloze ── */
+function renderOptions(q) {
+    const LT = ['A','B','C','D'];
+    let headHTML = '';
+    if (q.type === 'cloze' && q.passage) {
+        headHTML = `<div class="cloze-pass">${q.passage.replace('____', '<span class="blank">&nbsp;?&nbsp;</span>')}</div>`;
+    }
+    document.getElementById('clozeHost').innerHTML = headHTML;
+
+    // Option Randomizer
+    const perm = [0, 1, 2, 3];
+    for (let i = perm.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [perm[i], perm[j]] = [perm[j], perm[i]];
+    }
+    const displayOpts = perm.map(idx => q.opts[idx]);
+    G.currentAnsIdx = perm.indexOf(q.ans);
+    G.currentUserLabel = null;
+
+    const grid = document.getElementById('ansGrid');
+    grid.innerHTML = '';
+    displayOpts.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'ans-btn'; btn.id = `ab${i}`;
+        btn.innerHTML = `<span class="ans-badge">${LT[i]}</span><span>${opt}</span>`;
+        btn.onclick = () => handleAnswer(i);
+        grid.appendChild(btn);
+    });
+    grid.style.display = 'grid';
+}
+
+/* ── Type: rearrange ── */
+function renderRearrange(q) {
+    document.getElementById('clozeHost').innerHTML = '';
+    const grid = document.getElementById('ansGrid');
+    grid.style.display = 'none';
+    G.rearrTarget = [];
+    G.rearrPool = [...q.chunks];
+    for (let i = G.rearrPool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [G.rearrPool[i], G.rearrPool[j]] = [G.rearrPool[j], G.rearrPool[i]];
+    }
+    renderRearrangeAreas();
+}
+
+function renderRearrangeAreas() {
+    const host = document.getElementById('ansGrid');
+    host.style.display = 'block';
+    host.innerHTML = `
+        <div class="rearr-target" id="rearrTarget">
+            ${G.rearrTarget.length === 0 ? '<span class="ph">Click chunks below to build the sentence... 點選下方語塊排入句中</span>' : ''}
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem;" id="rearrPool"></div>`;
+    const targetEl = document.getElementById('rearrTarget');
+    G.rearrTarget.forEach((word, idx) => {
+        const chip = document.createElement('button');
+        chip.className = 'rearr-chip in-target';
+        chip.textContent = word;
+        chip.onclick = () => { G.rearrTarget.splice(idx, 1); G.rearrPool.push(word); renderRearrangeAreas(); };
+        targetEl.appendChild(chip);
+    });
+    const poolEl = document.getElementById('rearrPool');
+    G.rearrPool.forEach((word, idx) => {
+        const chip = document.createElement('button');
+        chip.className = 'rearr-chip';
+        chip.textContent = word;
+        chip.onclick = () => {
+            G.rearrPool.splice(idx, 1);
+            G.rearrTarget.push(word);
+            renderRearrangeAreas();
+            if (G.rearrPool.length === 0) checkRearrange();
+        };
+        poolEl.appendChild(chip);
+    });
+}
+
+function checkRearrange() {
     const q = G.questions[G.cur];
-    document.querySelectorAll('.ans-btn').forEach(b => b.disabled = true);
+    const isCorrect = G.rearrTarget.every((val, i) => val === q.chunks[i]);
+    resolveAnswer(isCorrect,
+        G.rearrTarget.join(' ') || '(未作答)',
+        q.chunks.join(' '));
+}
+
+/* ── Type: typein ── */
+function renderTypein(q) {
+    document.getElementById('clozeHost').innerHTML = '';
+    G.currentUserLabel = null;
+    const grid = document.getElementById('ansGrid');
+    grid.style.display = 'block';
+    grid.innerHTML = `
+        <div class="typein-row">
+            <input class="typein-input" id="typeinInput" type="text" autocomplete="off" spellcheck="false" placeholder="Type your answer here...">
+            <button class="typein-btn" id="typeinBtn">Check ✓</button>
+        </div>
+        <div class="typein-hint">💡 ${q.hint || ''}</div>`;
+    const input = document.getElementById('typeinInput');
+    input.focus();
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') submitTypein(); });
+    document.getElementById('typeinBtn').onclick = submitTypein;
+}
+
+function submitTypein() {
+    if (G.answered) return;
+    const input = document.getElementById('typeinInput');
+    const val = (input.value || '').trim().toLowerCase();
+    if (!val) return;
+    const q = G.questions[G.cur];
+    const isCorrect = q.answers.some(a => a.toLowerCase() === val);
+    resolveAnswer(isCorrect, input.value.trim(), q.answers[0]);
+}
+
+/* ── Unified Answer Resolution ── */
+function recordWrong(q, userAns, rightAns) {
+    G.wrong.push({ n: G.cur + 1, q: q.q, user: userAns, right: rightAns, expEn: q.expEn, expZh: q.expZh });
+}
+
+function resolveAnswer(isCorrect, userLabel, rightLabel) {
+    const q = G.questions[G.cur];
+    G.answered = true;
+    G.currentUserLabel = userLabel;
 
     const currentFrag = FRAGMENTS[G.levels][G.cur];
 
-    if (idx === G.currentAnsIdx) {
-        document.getElementById(`ab${idx}`).classList.add('correct');
+    if (isCorrect) {
         G.correct++;
-        showFeedback(true, q.expEn, q.expZh);
-        // TTS: question → then explanation
-        speak(q.q, () => speak(stripChineseLabel(stripHTML(q.expEn))));
+        showFeedback(true, q.expEn, q.expZh, q.tags);
+        speak(stripChineseLabel(stripHTML(q.expEn)));
         setTimeout(() => {
             const slot = document.getElementById(`fs${G.cur}`);
             if (slot) { slot.innerHTML = `<span>${currentFrag}</span>`; slot.classList.add('lit'); }
@@ -1736,30 +1903,53 @@ function handleAnswer(idx) {
         document.getElementById('fbFrag').className = 'fb-frag show';
         document.getElementById('btnNext').style.display = 'inline-block';
     } else {
-        document.getElementById(`ab${idx}`).classList.add('wrong');
-        document.getElementById(`ab${G.currentAnsIdx}`).classList.add('correct');
+        recordWrong(q, userLabel, rightLabel);
         const card = document.getElementById('qCard');
         card.classList.add('shaking');
         card.addEventListener('animationend', () => card.classList.remove('shaking'), { once: true });
-        showFeedback(false, q.expEn, q.expZh);
-        // TTS: question → then explanation
-        speak(q.q, () => speak(stripChineseLabel(stripHTML(q.expEn))));
+        showFeedback(false, q.expEn, q.expZh, q.tags, rightLabel);
+        speak(stripChineseLabel(stripHTML(q.expEn)));
         document.getElementById('btnRetry').style.display = 'inline-block';
         document.getElementById('btnNext').style.display  = 'inline-block';
     }
 }
 
-function showFeedback(ok, expEn, expZh) {
+function handleAnswer(idx) {
+    const q = G.questions[G.cur];
+    document.querySelectorAll('.ans-btn').forEach(b => b.disabled = true);
+    const opts = q.opts;
+    resolveAnswer(idx === G.currentAnsIdx, opts[idx], opts[q.ans]);
+    if (idx !== G.currentAnsIdx) {
+        document.getElementById(`ab${idx}`).classList.add('wrong');
+        document.getElementById(`ab${G.currentAnsIdx}`).classList.add('correct');
+    } else {
+        document.getElementById(`ab${idx}`).classList.add('correct');
+    }
+}
+
+function tagBadge(t) {
+    const cls = t.startsWith('PIRLS') ? 'tg-pirls' : t.startsWith('Bloom') ? 'tg-bloom' : 'tg-genre';
+    return `<span class="tag-badge ${cls}">${t}</span>`;
+}
+
+function showFeedback(ok, expEn, expZh, tags, rightLabel) {
     const box = document.getElementById('fbBox');
     box.className = 'fb-box show ' + (ok ? 'fb-ok' : 'fb-ng');
     document.getElementById('fbHead').innerHTML = ok
         ? '✅ Correct! Color Fragment Unlocked! <span class="zh-sub" style="color:var(--ok);">答對了！成功獲得色彩句型碎片</span>'
         : '❌ Incorrect! Learn from the breakdown below: <span class="zh-sub" style="color:var(--ng);">答錯了，請研讀解析吸取色彩知識</span>';
-    
-    document.getElementById('fbExplain').innerHTML = `
+
+    let html = '';
+    if (Array.isArray(tags) && tags.length) {
+        html += `<div class="tag-row">${tags.map(tagBadge).join('')}</div>`;
+    }
+    if (!ok && rightLabel) {
+        html += `<div style="font-size:0.85rem; color:#86efac; font-weight:700; margin-bottom:6px;">✔ Correct Answer 正確答案：<b>${rightLabel}</b></div>`;
+    }
+    html += `
         <div class="exp-en">${expEn}</div>
-        <div class="exp-zh">${expZh}</div>
-    `;
+        <div class="exp-zh">${expZh}</div>`;
+    document.getElementById('fbExplain').innerHTML = html;
 }
 
 function retryLevel() { renderLevel(); }
@@ -1768,19 +1958,38 @@ function nextLevel() {
     G.cur++;
     if (G.cur >= G.levels) {
         stopBGM();
+        stopTimer();
         if (G.correct >= G.levels) {
             showPuzzleScreen();
         } else {
             document.getElementById('failScore').textContent = G.correct;
             document.getElementById('failTotal').textContent = G.levels;
             document.getElementById('failStages').textContent = G.levels;
-            switchTo('failScreen');
+            switchTo('failScreen', () => { fillReview('failReview'); });
         }
     } else {
         const ov = document.getElementById('overlay');
         ov.classList.add('on');
         setTimeout(() => { renderLevel(); ov.classList.remove('on'); }, 340);
     }
+}
+
+/* ── Wrong Answer Review (錯題本) ── */
+function fillReview(containerId) {
+    const box = document.getElementById(containerId);
+    if (!box) return;
+    if (!G.wrong.length) { box.style.display = 'none'; return; }
+    box.style.display = 'block';
+    box.innerHTML = `
+        <div class="review-title">📖 My Wrong Answer Log 錯題本（${G.wrong.length} 題）</div>
+        ${G.wrong.map(w => `
+            <div class="review-item">
+                <div class="review-q">Stage ${w.n}｜${w.q}</div>
+                <div class="review-ans">
+                    <span class="ra-wrong">✗ 你的答案：${w.user}</span><br>
+                    <span class="ra-right">✔ 正確答案：${w.right}</span>
+                </div>
+            </div>`).join('')}`;
 }
 
 /* ─────────────────────────────────
@@ -1881,7 +2090,8 @@ function showVictory() {
         document.getElementById('certPhrase').textContent = PHRASES[G.levels];
 
         const pct = Math.round((G.correct / G.levels) * 100);
-        document.getElementById('certScore').innerHTML = `Cleared ${G.levels} Stages ｜ First-Try Accuracy: ${pct}%<br><span style="font-size:0.85em; font-family:'Noto Sans TC';">成功通過 ${G.levels} 關試煉 · 初次答對率 ${pct}%</span>`;
+        document.getElementById('certScore').innerHTML = `Cleared ${G.levels} Stages ｜ First-Try Accuracy: ${pct}% ｜ ⏱ Total Time ${fmtTime(G.elapsedMs)}<br><span style="font-size:0.85em; font-family:'Noto Sans TC';">成功通過 ${G.levels} 關試煉 · 初次答對率 ${pct}% · 累計時間 ${fmtTime(G.elapsedMs)}</span>`;
+        fillReview('victoryReview');
 
         const now = new Date();
         const dateStr = `${now.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })} (${now.getFullYear()} 年 ${now.getMonth()+1} 月 ${now.getDate()} 日)`;
